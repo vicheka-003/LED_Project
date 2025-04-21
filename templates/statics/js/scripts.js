@@ -111,3 +111,21 @@
             }, 300);
         }, 4000);
     }
+// Show notification for command result if available
+    // Initialize LED states based on server data if available
+    {% if led_states %}
+        const ledStates = {{ led_states|safe }};
+        for (const ledNum in ledStates) {
+            updateLEDVisual(ledNum, ledStates[ledNum]);
+            localStorage.setItem(`led${ledNum}State`, ledStates[ledNum]);
+        }
+    {% endif %}
+    
+    {% if message %}
+        {% if 'failed' in message %}
+            showNotification('{{ message }}', 'error');
+        {% else %}
+            showNotification('{{ message }}', 'success');
+        {% endif %}
+    {% endif %}
+</script>
